@@ -8,7 +8,8 @@ using Xunit.Abstractions;
 
 namespace MathLib.Tests
 {
-    public class AssertionStudy
+    //  If the SUT requires disposing, the test suite can implement IDisposable
+    public class AssertionStudy : IDisposable
     {
         private ITestOutputHelper _helper;
         
@@ -20,6 +21,11 @@ namespace MathLib.Tests
         {
             _helper = helper;
             _helper.WriteLine($"{nameof(AssertionStudy)} is created");
+        }
+
+        public void Dispose()
+        {
+            _helper.WriteLine($"{nameof(AssertionStudy)} is disposed");
         }
 
         [Fact]
