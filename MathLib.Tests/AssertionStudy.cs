@@ -13,6 +13,9 @@ namespace MathLib.Tests
         private ITestOutputHelper _helper;
         
         //  The test suite is created once per test (before a test runs)
+        //  Common initialization logic, such as arrange phase in some cases
+        //  can be moved to the constructor (making the SUT a field)
+        //  SUT: System Under Test (or Class Under Test - CUT) is the name of the unit
         public AssertionStudy(ITestOutputHelper helper)
         {
             _helper = helper;
