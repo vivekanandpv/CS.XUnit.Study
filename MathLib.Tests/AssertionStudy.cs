@@ -8,11 +8,11 @@ using Xunit.Abstractions;
 
 namespace MathLib.Tests
 {
-    //  To get the fixture provided, we implement IClassFixture<T>, where T is the fixture type
-    //  XUnit will inject this dependency in the test suite
-    //  The fixture is created in the transient scope (once per injection)
-    //  When using fixtures this way, ensure the tests do not cause any side-effects as the object is shared
-    public class AssertionStudy : IDisposable, IClassFixture<MathUtilsFixture>
+    //  For shared fixture context, the test suite does not implement IClassFixture,
+    //  but use Collection("name") attribute
+
+    [Collection(nameof(MathUtilsFixtureCollection))]
+    public class AssertionStudy : IDisposable
     {
         private ITestOutputHelper _helper;
         private MathUtilsFixture _fixture;
@@ -144,9 +144,6 @@ namespace MathLib.Tests
         }
     }
 
-    //  If the SUT object construction is costly, the constructor approach is not advisable
-    //  You can consider creating a fixture which usually has a public property for the SUT object
-    //  You can additionally implement IDisposable for any disposal logic
     public class MathUtilsFixture : IDisposable
     {
         public MathUtils MathObject { get; set; } = new MathUtils();
@@ -154,5 +151,14 @@ namespace MathLib.Tests
         {
             //  disposal logic goes here
         }
+    }
+
+    //  To share the fixture, we create a ceremonial empty class (usually with Collection suffix)
+    //  This class implements ICollectionFixture<T> where T is the fixture type
+
+    [CollectionDefinition(nameof(MathUtilsFixtureCollection))]
+    public class MathUtilsFixtureCollection : ICollectionFixture<MathUtilsFixture>
+    {
+
     }
 }
