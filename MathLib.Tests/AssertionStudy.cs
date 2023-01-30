@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -100,27 +102,41 @@ namespace MathLib.Tests
         }
 
         [Fact]
-        public void EventAssertions()
+        public void PropertyChangedAssertion()
         {
             var account = new BankAccount();
 
-            var result = Assert.Raises<string>(
-                handler => account.OnDeposit += handler,
-                handler => account.OnDeposit -= handler,
-                () =>
-                {
-                    account.Deposit(1455);
-                });
+            //  No code for event registration and deregistration
+            //  This method doesn't return any object unlike the event assetion
+            Assert.PropertyChanged(account, nameof(account.Balance), () => account.Deposit(1452));
         }
     }
 
-    class BankAccount
+    //  INotifyPropertyChanged is a general purpose event pattern
+    //  https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged.propertychanged?view=net-7.0
+    class BankAccount : INotifyPropertyChanged
     {
-        public event EventHandler<string> OnDeposit;
+        private double _balance = 0;
+        public double Balance => _balance;
 
         public void Deposit(double amount)
         {
-            OnDeposit?.Invoke(this, "deposited");
+            SetField(ref _balance, amount, nameof(Balance));
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+            field = value;
+            OnPropertyChanged(propertyName);
+            return true;
         }
     }
 }
