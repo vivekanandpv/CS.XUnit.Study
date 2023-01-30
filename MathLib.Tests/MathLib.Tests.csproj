@@ -25,4 +25,10 @@
     <ProjectReference Include="..\MathLib\MathLib.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="test-data.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
