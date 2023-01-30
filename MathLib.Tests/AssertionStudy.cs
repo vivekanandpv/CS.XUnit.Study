@@ -4,11 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Xunit.Abstractions;
 
 namespace MathLib.Tests
 {
     public class AssertionStudy
     {
+        private ITestOutputHelper _helper;
+        
+        //  The test suite is created once per test (before a test runs)
+        public AssertionStudy(ITestOutputHelper helper)
+        {
+            _helper = helper;
+            _helper.WriteLine($"{nameof(AssertionStudy)} is created");
+        }
+
         [Fact]
         public void NumericAssertions()
         {
