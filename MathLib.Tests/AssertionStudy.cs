@@ -8,19 +8,19 @@ using Xunit.Abstractions;
 
 namespace MathLib.Tests
 {
-    //  If the SUT requires disposing, the test suite can implement IDisposable
-    public class AssertionStudy : IDisposable
+    //  To get the fixture provided, we implement IClassFixture<T>, where T is the fixture type
+    //  XUnit will inject this dependency in the test suite
+    //  The fixture is created in the transient scope (once per injection)
+    public class AssertionStudy : IDisposable, IClassFixture<MathUtilsFixture>
     {
         private ITestOutputHelper _helper;
+        private MathUtilsFixture _fixture;
         
-        //  The test suite is created once per test (before a test runs)
-        //  Common initialization logic, such as arrange phase in some cases
-        //  can be moved to the constructor (making the SUT a field)
-        //  SUT: System Under Test (or Class Under Test - CUT) is the name of the unit
-        public AssertionStudy(ITestOutputHelper helper)
+        public AssertionStudy(ITestOutputHelper helper, MathUtilsFixture fixture)
         {
             _helper = helper;
-            _helper.WriteLine($"{nameof(AssertionStudy)} is created");
+            _fixture = fixture;
+            _helper.WriteLine($"SUT object is {(_fixture?.MathObject == null ? "null" : "not null")}");
         }
 
         public void Dispose()
@@ -140,6 +140,18 @@ namespace MathLib.Tests
         public void Deposit(double amount)
         {
             OnDeposit?.Invoke(this, "deposited");
+        }
+    }
+
+    //  If the SUT object construction is costly, the constructor approach is not advisable
+    //  You can consider creating a fixture which usually has a public property for the SUT object
+    //  You can additionally implement IDisposable for any disposal logic
+    public class MathUtilsFixture : IDisposable
+    {
+        public MathUtils MathObject { get; set; } = new MathUtils();
+        public void Dispose()
+        {
+            //  disposal logic goes here
         }
     }
 }
