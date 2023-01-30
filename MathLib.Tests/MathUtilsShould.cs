@@ -2,6 +2,11 @@ namespace MathLib.Tests
 {
     public class MathUtilsShould
     {
+        //  Trait applied at the method level
+        //  Use Traits GroupBy in the Test Explorer
+        //  CLI (use | for combining): dotnet test --filter "Assertion=Study"
+        //  General command: dotnet test --filter "category1=value1|category2=value2..."
+        [Trait("Domain", "Math")]
         [Theory]
         [InlineData(5, 10, 50)]
         [InlineData(-7, 7, -49)]

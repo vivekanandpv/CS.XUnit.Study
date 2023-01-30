@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 
 namespace MathLib.Tests
 {
+    //  Trait applied at the class level. Applicable to all tests.
+    //  Use Traits GroupBy in the Test Explorer
+    //  CLI (use | for combining): dotnet test --filter "Assertion=Study"
+    //  General command: dotnet test --filter "category1=value1|category2=value2..."
+    [Trait("Assertion", "Study")]
     public class AssertionStudy
     {
         [Fact]
