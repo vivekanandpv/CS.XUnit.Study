@@ -11,6 +11,7 @@ namespace MathLib.Tests
     //  To get the fixture provided, we implement IClassFixture<T>, where T is the fixture type
     //  XUnit will inject this dependency in the test suite
     //  The fixture is created in the transient scope (once per injection)
+    //  When using fixtures this way, ensure the tests do not cause any side-effects as the object is shared
     public class AssertionStudy : IDisposable, IClassFixture<MathUtilsFixture>
     {
         private ITestOutputHelper _helper;
