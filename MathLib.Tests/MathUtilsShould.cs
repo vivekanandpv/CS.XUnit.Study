@@ -8,7 +8,7 @@ namespace MathLib.Tests
         //  The static method can reside any class, so long as it is public
         
         [MemberData(nameof(GetTestDataLocal))]
-        //  [MemberData(nameof(DataProvider.GetTestDataExternal))]    //  also works
+        //[MemberData(nameof(DataProvider.GetTestDataExternal), MemberType = typeof(DataProvider))]    //  also works
         public void CalculateProductOfIntegers(int op1, int op2, int product)
         {
             //  Arrange
